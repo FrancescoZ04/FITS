@@ -6,16 +6,10 @@ from astropy.io import fits
 
 def informazioni_fits(output_filename="informazioni_fits.txt"):
 
-    # Repository GitHub
     repository = "FrancescoZ04/FITS"
-
-    # Cartella contenente i file FITS
     cartella = "FITS"
-
-    # Branch della repository
     branch = "main"
 
-    # API GitHub
     url = (
         f"https://api.github.com/repos/{repository}/contents/"
         f"{cartella}?ref={branch}"
@@ -26,7 +20,6 @@ def informazioni_fits(output_filename="informazioni_fits.txt"):
 
     contenuti = risposta.json()
 
-    # Selezione dei file FITS
     file_list = [
         elemento for elemento in contenuti
         if elemento["type"] == "file"
@@ -51,11 +44,9 @@ def informazioni_fits(output_filename="informazioni_fits.txt"):
         filename = elemento["name"]
 
         try:
-            # Download temporaneo del file
             download = requests.get(elemento["download_url"])
             download.raise_for_status()
 
-            # Apertura del FITS direttamente dalla memoria
             with fits.open(BytesIO(download.content)) as hdul:
 
                 header = hdul[0].header
@@ -93,13 +84,11 @@ def informazioni_fits(output_filename="informazioni_fits.txt"):
             str(dec)
         ])
 
-    # Larghezza delle colonne
     col_widths = [
         max(len(str(row[i])) for row in table_data)
         for i in range(len(headers))
     ]
 
-    # Scrittura del file di testo
     with open(output_filename, "w", encoding="utf-8") as f:
 
         for row in table_data:
