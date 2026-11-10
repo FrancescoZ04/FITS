@@ -34,6 +34,7 @@ def informazioni_fits(directory_path, output_filename="informazioni_fits.txt"):
                 data_obs = header.get("DATE-OBS", "N/A")
                 tipo_img = header.get("IMAGETYP", "N/A")
                 strumento = header.get("INSTRUME", "N/A")
+                filtro = header.get("FILTER", "N/A")
                 ra = header.get("RA", "N/A")
                 dec = header.get("DEC", "N/A")
 
@@ -49,6 +50,7 @@ def informazioni_fits(directory_path, output_filename="informazioni_fits.txt"):
             data_obs = "Errore"
             tipo_img = "Errore"
             strumento = "Errore"
+            filtro = "Errore"
             ra = "Errore"
             dec = "Errore"
 
