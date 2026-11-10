@@ -8,12 +8,13 @@ def informazioni_fits(directory_path, output_filename="informazioni_fits.txt"):
     for filepath in glob.glob(os.path.join(directory_path, "*")):
         if filepath.lower().endswith((".fits", ".fts")):
             file_list.append(filepath)
-            
+
     if not file_list:
         print(f"Nessun file FITS trovato nella directory: {directory_path}")
         return
 
-    headers = ["Nome file","Matrice","Data","Tipo Immagine","Strumento","Alpha","Delta"]
+    headers = ["Nome file", "Matrice", "Data", "Tipo Immagine",
+               "Strumento", "Filtro", "Alpha", "Delta"]
 
     table_data = [headers]
 
@@ -21,6 +22,7 @@ def informazioni_fits(directory_path, output_filename="informazioni_fits.txt"):
 
     for filepath in sorted(file_list):
         filename = os.path.basename(filepath)
+
         try:
             with fits.open(filepath) as hdul:
                 header = hdul[0].header
@@ -38,12 +40,6 @@ def informazioni_fits(directory_path, output_filename="informazioni_fits.txt"):
                 ra = header.get("RA", "N/A")
                 dec = header.get("DEC", "N/A")
 
-                #if isinstance(ra, (int, float)):
-                #    ra = f"{ra:.4f}"
-
-                #if isinstance(dec, (int, float)):
-                #   dec = f"{dec:.4f}"
-
         except Exception as e:
             print(f"Errore nella lettura di {filename}: {e}")
             matrice = "Errore"
@@ -54,7 +50,16 @@ def informazioni_fits(directory_path, output_filename="informazioni_fits.txt"):
             ra = "Errore"
             dec = "Errore"
 
-        table_data.append([filename, matrice, str(data_obs), str(tipo_img), str(strumento), str(ra), str(dec)])
+        table_data.append([
+            filename,
+            matrice,
+            str(data_obs),
+            str(tipo_img),
+            str(strumento),
+            str(filtro),
+            str(ra),
+            str(dec)
+        ])
 
     col_widths = [
         max(len(str(row[i])) for row in table_data)
@@ -77,6 +82,7 @@ def informazioni_fits(directory_path, output_filename="informazioni_fits.txt"):
                 f.write(separator + "\n")
 
     print(f"\nTabella salvata correttamente in:\n{output_filename}")
+
 
 if __name__ == "__main__":
     cartella_principale = os.path.dirname(os.path.abspath(__file__))
