@@ -1,0 +1,7 @@
+Strumento AFOSC
+
+Cercare Notte
+
+FLAT (Skyflat)  5 (Per ogni flitro U B V R I)
+
+BIAS e DARK     5 Dark 5 Bias
